@@ -2,7 +2,11 @@ package com.example.miaplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,6 +30,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         val btnOctagono = findViewById<Button>(R.id.btnOctagono)
 
         presenter = MainPresenter(this)
+
+
+        val spinnerMenu = findViewById<Spinner>(R.id.spinnerMenu)
+        val figuras= arrayOf("Selecciona una figura","Triangulo","Rectangulo", "Rombo","Octagono")
+
+        spinnerMenu.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, figuras)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -65,7 +75,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         }
 
+        spinnerMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (figuras[position]) {
+                    "Triangulo" -> presenter.TrianguloClick()
+                    "Rectangulo" -> presenter.RectanguloClick()
+                    "Rombo" -> presenter.RomboClick()
+                    "Octagono" -> presenter.OctagonoClick()
+                }
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
     }
 
